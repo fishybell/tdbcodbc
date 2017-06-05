@@ -119,6 +119,9 @@ enum _SQL_DATATYPE {
     SQL_WCHAR = -8,
     SQL_WVARCHAR = -9,
     SQL_WLONGVARCHAR = -10,
+    SQL_TYPE_DATE = 91,
+    SQL_TYPE_TIME = 92,
+    SQL_TYPE_TIMESTAMP = 93,
 };
 
 /* C data types */

@@ -4164,7 +4164,7 @@ GetCell(
     convertLong:
 	/* An integer no larger than 'long' */
 	colLen = sizeof(colLong); colLong = 0;
-	rc = SQLGetData(rdata->hStmt, i+1, SQL_C_SLONG,
+	rc = SQLGetData(rdata->hStmt, i+1, rdata->results[i].dataType == SQL_BIT ? SQL_C_LONG : SQL_C_SLONG,
 			(SQLPOINTER) &colLong, sizeof(colLong), &colLen);
 	if (rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO) {
 	    char info[80];
@@ -4228,6 +4228,16 @@ GetCell(
     case SQL_VARBINARY:
     case SQL_LONGVARBINARY:
 	dataType = SQL_C_BINARY;
+	goto convertString;
+
+    case SQL_TYPE_DATE:
+    case SQL_TYPE_TIME:
+    case SQL_TYPE_TIMESTAMP:
+	if (cdata->flags & CONNECTION_FLAG_HAS_WVARCHAR) {
+	    dataType = SQL_C_WCHAR;
+	} else {
+	    dataType = SQL_C_CHAR;
+	}
 	goto convertString;
 
     default:
