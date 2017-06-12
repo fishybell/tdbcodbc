@@ -4032,10 +4032,11 @@ ResultSetNextrowMethod(
 	    }
 	    Tcl_ListObjAppendElement(NULL, resultRow, colObj);
 	} else {
-	    if (colObj != NULL) {
-		Tcl_ListObjIndex(NULL, rdata->resultColNames, i, &colName);
-		Tcl_DictObjPut(NULL, resultRow, colName, colObj);
+	    if (colObj == NULL) {
+		colObj = Tcl_NewObj();
 	    }
+	    Tcl_ListObjIndex(NULL, rdata->resultColNames, i, &colName);
+	    Tcl_DictObjPut(NULL, resultRow, colName, colObj);
 	}
     }
 
